@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Email Triage Project</title>
+  <title>AI Email Triage System</title>
+
   <style>
     body {
       font-family: Arial;
+      background: #f0f2f5;
       text-align: center;
-      padding: 50px;
-      background: #f5f7fa;
+      padding: 30px;
     }
+
+    h1 {
+      color: #2c3e50;
+    }
+
     button {
       padding: 12px 20px;
       font-size: 16px;
@@ -17,33 +23,44 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
+      margin: 10px;
     }
+
     button:hover {
       background: #0056b3;
     }
-    #output {
-      margin-top: 20px;
-      text-align: left;
+
+    .email {
       background: white;
       padding: 15px;
-      border-radius: 8px;
+      margin: 15px auto;
+      border-radius: 10px;
       width: 60%;
-      margin-left: auto;
-      margin-right: auto;
+      text-align: left;
+      box-shadow: 0 0 5px #ccc;
+    }
+
+    .actions button {
+      background: #28a745;
+      margin-right: 5px;
+    }
+
+    .actions button.delete {
+      background: #dc3545;
     }
   </style>
 </head>
 
 <body>
 
-  <h1>Email Triage API 🚀</h1>
-  <p>Click below to call backend API</p>
+<h1>📧 AI Email Triage System</h1>
+<p>This system automatically classifies and processes emails using backend API.</p>
 
-  <button onclick="runAPI()">Run API</button>
+<button onclick="runAPI()">🚀 Load Emails</button>
 
-  <div id="output"></div>
+<div id="output"></div>
 
-  <script>
+<script>
 function runAPI() {
   fetch("https://email-triage-api-5c9t.onrender.com/reset", {
     method: "POST",
@@ -55,14 +72,20 @@ function runAPI() {
   .then(res => res.json())
   .then(data => {
     let emails = data.observation.inbox;
-    let html = "<h2>Inbox 📧</h2>";
+    let html = "<h2>Inbox</h2>";
 
     emails.forEach(e => {
       html += `
-        <div style="background:white; padding:15px; margin:10px; border-radius:10px; box-shadow:0 0 5px #ccc;">
+        <div class="email">
           <b>${e.subject}</b><br>
           <small>From: ${e.sender}</small><br><br>
           ${e.body.substring(0,120)}...
+          
+          <div class="actions">
+            <button onclick="alert('Label feature demo')">Label</button>
+            <button onclick="alert('Reply feature demo')">Reply</button>
+            <button class="delete" onclick="alert('Delete feature demo')">Delete</button>
+          </div>
         </div>
       `;
     });
@@ -70,7 +93,7 @@ function runAPI() {
     document.getElementById("output").innerHTML = html;
   })
   .catch(err => {
-    alert("Error connecting backend ❌");
+    alert("Backend connection error ❌");
     console.error(err);
   });
 }
