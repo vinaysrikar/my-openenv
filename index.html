@@ -2,10 +2,67 @@
 <html>
 <head>
   <title>Email Triage Project</title>
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      padding: 50px;
+      background: #f5f7fa;
+    }
+    button {
+      padding: 12px 20px;
+      font-size: 16px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    #output {
+      margin-top: 20px;
+      text-align: left;
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      width: 60%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
 </head>
+
 <body>
-  <h1>Email Triage API Project</h1>
-  <p>This project is built using FastAPI.</p>
-  <p>Backend runs locally or on server.</p>
+
+  <h1>Email Triage API 🚀</h1>
+  <p>Click below to call backend API</p>
+
+  <button onclick="runAPI()">Run API</button>
+
+  <div id="output"></div>
+
+  <script>
+    function runAPI() {
+      fetch("https://email-triage-api-5c9t.onrender.com/reset", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ task_id: "task_easy" })
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("output").innerHTML =
+          "<pre>" + JSON.stringify(data, null, 2) + "</pre>";
+      })
+      .catch(err => {
+        alert("Error connecting to backend");
+        console.error(err);
+      });
+    }
+  </script>
+
 </body>
 </html>
