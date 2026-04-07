@@ -1,0 +1,66 @@
+name: email-triage-env
+version: "1.0.0"
+description: >
+  A realistic email triage environment where an agent must process an inbox,
+  categorize emails, draft replies, flag urgent messages, and unsubscribe from
+  spam — simulating a common real-world knowledge-worker task.
+author: openenv-contributor
+tags:
+  - email
+  - triage
+  - productivity
+  - nlp
+  - real-world
+
+observation_space:
+  type: object
+  description: Current inbox state with visible emails and metadata
+  fields:
+    inbox: list of EmailMessage objects
+    current_email: the email currently being viewed (or null)
+    labels: list of available label strings
+    step_count: int
+    task_id: str
+
+action_space:
+  type: object
+  description: Discrete + structured actions the agent can take
+  actions:
+    - open_email: {email_id: str}
+    - label_email: {email_id: str, label: str}
+    - reply_email: {email_id: str, body: str}
+    - delete_email: {email_id: str}
+    - unsubscribe: {email_id: str}
+    - flag_urgent: {email_id: str}
+    - archive_email: {email_id: str}
+    - done: {}
+
+tasks:
+  - id: task_easy
+    name: "Basic Triage"
+    difficulty: easy
+    description: >
+      Label all 5 emails correctly as one of: work, personal, spam, newsletter, urgent.
+      All correct labels = 1.0 score.
+
+  - id: task_medium
+    name: "Triage + Reply"
+    difficulty: medium
+    description: >
+      Label all emails correctly AND draft a professional reply to the 2 emails
+      that require a response. Graded on label accuracy + reply quality heuristics.
+
+  - id: task_hard
+    name: "Full Inbox Zero"
+    difficulty: hard
+    description: >
+      Process a 10-email inbox: correct labels, appropriate replies, delete spam,
+      unsubscribe from newsletters, flag 2 urgent items, archive the rest.
+      Penalized for missing urgent emails or deleting non-spam.
+
+rewards:
+  range: [-1.0, 1.0]
+  shaped: true
+  description: >
+    Partial credit for each correct action. Penalties for destructive mistakes
+    (deleting non-spam, missing urgent emails). Final bonus for completing all tasks.
