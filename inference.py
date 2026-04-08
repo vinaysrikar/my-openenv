@@ -1,2 +1,5 @@
 def predict(input_data):
-    return {"status": "ok"}
+    return {
+        "status": "ok",
+        "output": input_data
+    }
