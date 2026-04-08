@@ -1,4 +1,6 @@
-from env import EmailTriageEnv
+
+
+from env.environment import EmailTriageEnv
 
 def predict(input_data):
     env = EmailTriageEnv()
