@@ -1,2 +1,10 @@
+from env import EmailTriageEnv
+
 def predict(input_data):
-    return {"status": "ok"}
+    env = EmailTriageEnv()
+    obs = env.reset("task_easy")
+
+    return {
+        "status": "ok",
+        "observation": obs.model_dump() if hasattr(obs, "model_dump") else obs
+    }
